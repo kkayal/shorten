@@ -8,7 +8,7 @@
 //! 
 //! # Version
 //! 
-//! 0.1.0
+//! 0.1.1
 //! 
 //! ## Example 1:
 //! 
@@ -30,6 +30,13 @@
 //! // let s2 = s!(", world");
 //! // assert_eq!(ss!(s1, s2), "Hello, world");
 //! ```
+//! 
+//! ## Example 3:
+//! ```rust
+//! use shorten::*;
+//! let data = fread("README.md").unwrap();
+//! assert!(data.len() > 100);
+//! ```
 
 // Shorten String::from("hello") to s!("hello")
 macro_rules! s { ( $x:expr ) => { String::from($x); }; }
@@ -37,8 +44,27 @@ macro_rules! s { ( $x:expr ) => { String::from($x); }; }
 // Concatenate two string(s) (slices) and return a string slice
 macro_rules! ss {	($x:expr, $y:expr) => ( &*format!("{}{}", $x, $y); ) }
 
+use std::fs::File;
+use std::path::Path;
+use std::io;
+
+#[allow(unused_imports)]
+use std::io::{Read, Write};
+
+/// Read a file into a Vec[u8]
+pub fn fread<P: AsRef<Path>>(path: P) -> io::Result<Vec<u8>> {
+  let mut file = File::open(path)?;
+  let meta = file.metadata()?;
+  let size = meta.len() as usize;
+  let mut data = Vec::with_capacity(size);
+  data.resize(size, 0);
+  file.read_exact(&mut data)?;
+  Ok(data)
+}
+
 #[cfg(test)]
 mod tests {
+	use super::*;
 	#[test]
 	fn s() {
 		assert_eq!(s!("Hello"), String::from("Hello"));
@@ -51,5 +77,11 @@ mod tests {
 		let s1 = s!("Hello");
 		let s2 = s!(", world");
 		assert_eq!(ss!(s1, s2), "Hello, world");
+	}
+
+	#[test]
+	fn fread_test() {
+		let data = fread("README.md").unwrap();
+		assert!(data.len() > 100);
 	}
 }
