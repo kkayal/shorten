@@ -26,12 +26,14 @@
 //! 
 //! ```rust
 //! // #[macro_use] extern crate shorten;
+//! // use shorten::*;
 //! // let s1 = s!("Hello");
 //! // let s2 = s!(", world");
 //! // assert_eq!(ss!(s1, s2), "Hello, world");
 //! ```
 //! 
 //! ## Example 3:
+//! // #[macro_use] extern crate shorten;
 //! ```rust
 //! use shorten::*;
 //! let data = fread("README.md").unwrap();
@@ -39,9 +41,11 @@
 //! ```
 
 // Shorten String::from("hello") to s!("hello")
+#[macro_export]
 macro_rules! s { ( $x:expr ) => { String::from($x); }; }
 
 // Concatenate two string(s) (slices) and return a string slice
+#[macro_export]
 macro_rules! ss {	($x:expr, $y:expr) => ( &*format!("{}{}", $x, $y); ) }
 
 use std::fs::File;
