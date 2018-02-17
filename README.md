@@ -22,7 +22,7 @@ Concatenate two string(s) (slices) and return a **string slice**.
 
 `ss!("Hello", ", world")` is the same as `"Hello, world"`
 
-The same macro works also with an arbitrarz combination of String objects and string slices
+The same macro works also with an arbitrary combination of String objects and string slices
 
 ```
 #[macro_use] extern crate shorten;
