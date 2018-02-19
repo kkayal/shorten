@@ -8,7 +8,7 @@
 //! 
 //! # Version
 //! 
-//! 0.1.2
+//! 0.1.3
 //! 
 //! ## Example 1:
 //! 
@@ -36,8 +36,19 @@
 //! // #[macro_use] extern crate shorten;
 //! ```rust
 //! use shorten::*;
-//! let data = fread("README.md").unwrap();
-//! assert!(data.len() > 100);
+//! let v = fread(".gitignore").unwrap();
+//!
+//! // Convert to a String
+//!
+//! // Option 1: Safe. Consumes the vector and complains about invalid UTF-8
+//! let s = String::from_utf8(v).expect("Found invalid UTF-8");
+//!
+//! // Option 2: Lossy. It turns invalid UTF-8 bytes into � and so no error handling is required
+//! let s = String::from_utf8_lossy(&v[..]).into_owned(); // Does NOT consume v ???
+//!
+//! // Option 3: Convert to a u8 array (not Vec) and then to a string slice. 
+//! // The conversion is in-place, and does not require an allocation. You can create a String from the slice if necessary.
+//! let s = std::str::from_utf8(&v[..]).unwrap(); // Does NOT consume v ???
 //! ```
 
 // Shorten String::from("hello") to s!("hello")
@@ -85,7 +96,25 @@ mod tests {
 
 	#[test]
 	fn fread_test() {
-		let data = fread("README.md").unwrap();
-		assert!(data.len() > 100);
+		let v = fread(".gitignore").unwrap();
+		println!("v = {:?}", v);
+		assert_eq!(v, [47, 116, 97, 114, 103, 101, 116, 47, 13, 10, 67, 97, 114, 103, 111, 46, 108, 111, 99, 107, 13, 10]);
+
+		// Convert to a String
+		// Option 1: Safe
+		// Thanks to https://stackoverflow.com/questions/19076719/how-do-i-convert-a-vector-of-bytes-u8-to-a-string
+		let s = String::from_utf8(v).expect("Found invalid UTF-8");
+		assert_eq!(s, "/target/\r\nCargo.lock\r\n");
+
+		// Option 2: Lossy
+		// It turns invalid UTF-8 bytes into � and so no error handling is required
+		let v = fread(".gitignore").unwrap(); // Read it again, since "v" was consumed above
+		let s = String::from_utf8_lossy(&v[..]); // Does NOT consume v ???
+		assert_eq!(s, "/target/\r\nCargo.lock\r\n");
+
+		// Option 3: Convert to a u8 array (not Vec) and then to a string slice. 
+		// The conversion is in-place, and does not require an allocation. You can create a String from the slice if necessary.
+		let s = std::str::from_utf8(&v[..]).unwrap(); // Does NOT consume v ???
+		assert_eq!(s, "/target/\r\nCargo.lock\r\n");
 	}
 }
