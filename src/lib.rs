@@ -4,11 +4,11 @@
 //! 
 //! # Status
 //! 
-//! Experimental
+//! passively-maintained
 //! 
 //! # Version
 //! 
-//! 0.1.4
+//! 0.1.5
 //! 
 //! ## Example 1:
 //! 

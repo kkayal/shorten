@@ -1,6 +1,6 @@
 [package]
 name = "shorten"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Kağan Kayal"]
 description = "A collection of convenience functions, macros and traits to shorten repetitive code."
 homepage = "https://github.com/kkayal/shorten"
