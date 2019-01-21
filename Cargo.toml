@@ -1,6 +1,6 @@
 [package]
 name = "shorten"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Kağan Kayal"]
 description = "A collection of convenience functions, macros and traits to shorten repetitive code."
 homepage = "https://github.com/kkayal/shorten"
@@ -9,8 +9,9 @@ readme = "README.md"
 keywords = ["macros", "functions", "traits"]
 categories = ["development-tools"]
 license = "MIT"
+edition = "2018"
 
 [badges]
-maintenance = { status = "experimental" }
+maintenance = { status = "passively-maintained" }
 
 [dependencies]

@@ -8,7 +8,7 @@
 //! 
 //! # Version
 //! 
-//! 0.1.3
+//! 0.1.4
 //! 
 //! ## Example 1:
 //! 
@@ -44,11 +44,13 @@
 //! let s = String::from_utf8(v).expect("Found invalid UTF-8");
 //!
 //! // Option 2: Lossy. It turns invalid UTF-8 bytes into � and so no error handling is required
-//! let s = String::from_utf8_lossy(&v[..]).into_owned(); // Does NOT consume v ???
+//! let v = fread(".gitignore").unwrap();
+//! let s = String::from_utf8_lossy(&v[..]).into_owned();
 //!
 //! // Option 3: Convert to a u8 array (not Vec) and then to a string slice. 
 //! // The conversion is in-place, and does not require an allocation. You can create a String from the slice if necessary.
-//! let s = std::str::from_utf8(&v[..]).unwrap(); // Does NOT consume v ???
+//! let v = fread(".gitignore").unwrap();
+//! let s = std::str::from_utf8(&v[..]).unwrap();
 //! ```
 
 // Shorten String::from("hello") to s!("hello")
