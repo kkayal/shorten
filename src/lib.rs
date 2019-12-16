@@ -74,8 +74,11 @@ pub fn fread<P: AsRef<Path>>(path: P) -> io::Result<Vec<u8>> {
   let meta = file.metadata()?;
   let size = meta.len() as usize;
   let mut data = Vec::with_capacity(size);
-  data.resize(size, 0);
-  file.read_exact(&mut data)?;
+	
+  for b in file.bytes() { 
+    data.push(b.unwrap_or_default());
+  }
+	
   Ok(data)
 }
 
